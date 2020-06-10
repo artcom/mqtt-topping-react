@@ -1,9 +1,9 @@
-import connect from "./connect"
+import connectMqttClient from "./connectMqttClient"
 import { MqttProvider, MqttContext } from "./mqttProvider"
 import useMqttSubscribe from "./useMqttSubscribe"
 
 export {
-  connect,
+  connectMqttClient,
   MqttContext,
   MqttProvider,
   useMqttSubscribe
