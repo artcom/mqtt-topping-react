@@ -1,0 +1,49 @@
+{
+  "name": "mqtt-topping-react",
+  "version": "1.0.0",
+  "description": "",
+  "files": [
+    "lib/"
+  ],
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/artcom/mqtt-topping-react.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "mqtt",
+    "json",
+    "http",
+    "async"
+  ],
+  "scripts": {
+    "lint": "eslint src --fix",
+    "build": "babel src --out-dir lib --source-maps",
+    "test": "jest",
+    "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
+    "prepublishOnly": "npm run lint && npm run test && npm run build"
+  },
+  "peerDependencies": {
+    "@artcom/mqtt-topping": "^1.0.4",
+    "react": "^16.13.1"
+  },
+  "devDependencies": {
+    "@artcom/mqtt-topping": "^1.0.4",
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "@testing-library/react": "^10.2.1",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.2.0",
+    "eslint-config-artcom": "^0.11.0",
+    "eslint-config-artcom-react": "^0.5.2",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jest": "^23.13.2",
+    "eslint-plugin-react": "^7.20.0",
+    "jest": "^26.0.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
