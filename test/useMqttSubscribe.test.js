@@ -13,7 +13,7 @@ const TestComponent = ({
   options = defaultOptions }) => {
   useMqttSubscribe(topic, handler, options)
 
-  return <>Test Component</>
+  return <></>
 }
 
 describe("useMqttSubscribe", () => {

@@ -3,11 +3,11 @@ import { useContext, useEffect } from "react"
 import { MqttContext } from "./mqttProvider"
 
 export default (topic, handler, { qos, parseJson } = {}) => {
-  const mqttConnection = useContext(MqttContext)
+  const { mqtt } = useContext(MqttContext)
 
   useEffect(() => {
-    mqttConnection.subscribe(topic, handler, { qos, parseJson })
+    mqtt.subscribe(topic, handler, { qos, parseJson })
 
-    return () => mqttConnection.unsubscribe(topic, handler)
+    return () => mqtt.unsubscribe(topic, handler)
   }, [topic, handler, qos, parseJson])
 }
