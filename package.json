@@ -1,5 +1,5 @@
 {
-  "name": "mqtt-topping-react",
+  "name": "@artcom/mqtt-topping-react",
   "version": "1.0.1",
   "description": "Wraps the Art+Com Mqtt Topping library for react.",
   "files": [
@@ -25,11 +25,11 @@
     "prepublishOnly": "npm run lint && npm run test && npm run build"
   },
   "peerDependencies": {
-    "@artcom/mqtt-topping": "^1.0.4",
+    "@artcom/mqtt-topping": "^1.0.5",
     "react": "^16.13.1"
   },
   "devDependencies": {
-    "@artcom/mqtt-topping": "^1.0.4",
+    "@artcom/mqtt-topping": "^1.0.5",
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
