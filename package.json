@@ -24,12 +24,13 @@
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "prepublishOnly": "npm run lint && npm run test && npm run build"
   },
+  "dependencies": {
+    "@artcom/mqtt-topping": "^1.0.5"
+  },
   "peerDependencies": {
-    "@artcom/mqtt-topping": "^1.0.5",
     "react": "^16.13.1"
   },
   "devDependencies": {
-    "@artcom/mqtt-topping": "^1.0.5",
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
