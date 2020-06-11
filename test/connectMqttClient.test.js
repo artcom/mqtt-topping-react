@@ -2,11 +2,11 @@
 jest.mock("@artcom/mqtt-topping", () => ({ connectMqttClient: jest.fn() }))
 
 import topping from "@artcom/mqtt-topping"
-import { connect } from "../src"
+import { connectMqttClient } from "../src"
 
-describe("connect", () => {
-  test("calls internal connect method", () => {
-    connect("broker.test.local", "testId")
+describe("connectMqttClient", () => {
+  test("calls internal connectMqttClient method", () => {
+    connectMqttClient("broker.test.local", "testId")
 
     expect(topping.connectMqttClient).toHaveBeenCalled()
   })
