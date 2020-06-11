@@ -1,7 +1,7 @@
 {
   "name": "mqtt-topping-react",
   "version": "1.0.0",
-  "description": "",
+  "description": "Wraps the Art+Com Mqtt Topping library for react.",
   "files": [
     "lib/"
   ],
