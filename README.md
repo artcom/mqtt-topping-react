@@ -4,7 +4,7 @@ Wraps the [Art+Com Mqtt Topping](https://www.npmjs.com/package/@artcom/mqtt-topp
 
 ## Examples
 
-## MQTT Context
+### MQTT Context
 
 Create an MQTT context with an MQTT and HTTP client.
 
