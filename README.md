@@ -1,6 +1,6 @@
 # mqtt-topping-react
 
-Wraps the [Art+Com Mqtt Topping](https://www.npmjs.com/package/@artcom/mqtt-topping) library for react. It provides a subscribe hook and exposes the publish/unpublish methods.
+Wraps the [Art+Com Mqtt Topping](https://www.npmjs.com/package/@artcom/mqtt-topping) library for react. It provides multiple hooks and exposes the publish/unpublish methods.
 
 ## Examples
 
