@@ -4,6 +4,30 @@ Wraps the [Art+Com Mqtt Topping](https://www.npmjs.com/package/@artcom/mqtt-topp
 
 ## Examples
 
+## MQTT Context
+
+Create an MQTT context with an MQTT and HTTP client.
+
+Note: The `unpublishRecursively` method as well as the `Query` methods need/use the HTTP client internally.
+
+```javascript
+import React from "react"
+import { connectMqttClient, createHttpClient, MqttProvider } from "@artcom/mqtt-topping-react"
+
+async function start() {
+  const mqttClient = await connectMqttClient("ws://broker.test.local:1883", "testClientId")
+  const httpClient = createHttpClient("http://broker.test.local:8080")
+
+  render(
+    <MqttProvider mqtt={ mqttClient } http={ httpClient }>
+      // render app
+    </MqttProvider>
+  )
+}
+
+start()
+```
+
 ### Subscribe
 
 ```javascript
