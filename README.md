@@ -44,6 +44,90 @@ const MyComponent = () => {
 }
 ```
 
+### UnpublishRecursively
+
+```javascript
+import React, { useContext } from "react"
+import { MqttContext } from "@artcom/mqtt-topping-react"
+
+const MyComponent = () => {
+  useContext(MqttContext).unpublishRecursively("myTopic")
+
+  return <></>
+}
+```
+
+### HTTP Queries
+
+To query topics via the [retained topic HiveMQ plugin](https://github.com/artcom/hivemq-retained-message-query-plugin) the following hooks can be used. See the [async-task-hook documentation](https://github.com/artcom/async-task-hook) for details.
+
+#### Query
+
+```javascript
+import React from "react"
+import { useQuery } from "@artcom/mqtt-topping-react"
+
+const MyComponent = () => {
+  const query = { topic: "myTopic", depth: 0, flatten: false, parseJson: true }
+  const result = useQuery(query)
+
+  // render result
+
+  return <></>
+}
+```
+
+#### Query Batch
+
+Note: Its mandatory to persist (e.g. memoize the queries) otherwise a new task is created on every rerender.
+
+```javascript
+import React, { useMemo } from "react"
+import { useQueryBatch } from "@artcom/mqtt-topping-react"
+
+const MyComponent = () => {
+  const queries = useMemo([{ topic: "topic1", depth: 1 }, { topic: "topic2", depth: 0 }], [])
+  const result = useQueryBatch(queries)
+
+  // render result
+
+  return <></>
+}
+```
+
+#### Query Json
+
+```javascript
+import React from "react"
+import { useQueryJson } from "@artcom/mqtt-topping-react"
+
+const MyComponent = () => {
+  const result = useQueryJson("myTopic")
+
+  // render result
+
+  return <></>
+}
+```
+
+#### Query Json Batch
+
+Note: Its mandatory to persist (e.g. memoize the queries) otherwise a new task is created on every rerender.
+
+```javascript
+import React from "react"
+import { useQueryJsonBatch } from "@artcom/mqtt-topping-react"
+
+const MyComponent = () => {
+  const queries = useMemo(["topic1", "topic2"], [])
+  const result = useQueryJsonBatch(queries)
+
+  // render result
+
+  return <></>
+}
+```
+
 ## Development
 
 ### Build
