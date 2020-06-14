@@ -1,7 +1,6 @@
 import React from "react"
 import { render } from "@testing-library/react"
-import { MqttProvider } from "../src/mqttProvider"
-import useMqttSubscribe from "../src/useMqttSubscribe"
+import { MqttProvider, useMqttSubscribe } from "../src"
 
 const defaultTopic = "testTopic"
 const defaultHandler = () => {}

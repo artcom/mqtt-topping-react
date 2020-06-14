@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { render } from "@testing-library/react"
-import { MqttContext, MqttProvider } from "../src/mqttProvider"
+import { MqttContext, MqttProvider } from "../src"
 
 const topic = "testTopic"
 const payload = "testPayload"

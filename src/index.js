@@ -2,11 +2,19 @@ import connectMqttClient from "./connectMqttClient"
 import createHttpClient from "./createHttpClient"
 import { MqttProvider, MqttContext } from "./mqttProvider"
 import useMqttSubscribe from "./useMqttSubscribe"
+import useQuery from "./useQuery"
+import useQueryBatch from "./useQueryBatch"
+import useQueryJson from "./useQueryJson"
+import useQueryJsonBatch from "./useQueryJsonBatch"
 
 export {
   connectMqttClient,
   createHttpClient,
   MqttContext,
   MqttProvider,
-  useMqttSubscribe
+  useMqttSubscribe,
+  useQuery,
+  useQueryBatch,
+  useQueryJson,
+  useQueryJsonBatch
 }
