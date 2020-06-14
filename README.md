@@ -8,7 +8,7 @@ Wraps the [Art+Com Mqtt Topping](https://www.npmjs.com/package/@artcom/mqtt-topp
 
 Create an MQTT context with an MQTT and HTTP client.
 
-Note: The `unpublishRecursively` method as well as the `Query` methods need/use the HTTP client internally.
+**Note:** The `unpublishRecursively` method as well as the `Query` methods need/use the HTTP client internally.
 
 ```javascript
 import React from "react"
@@ -29,6 +29,8 @@ start()
 ```
 
 ### Subscribe
+
+**Note:** Its mandatory to persist the handler (e.g. useCallback) otherwise a new subscription is made on every render.
 
 ```javascript
 import React, { useCallback } from "react"
@@ -103,7 +105,7 @@ const MyComponent = () => {
 
 #### Query Batch
 
-Note: Its mandatory to persist (e.g. memoize the queries) otherwise a new task is created on every rerender.
+**Note:** Its mandatory to persist (e.g. memoize the queries) otherwise a new task is created on every rerender.
 
 ```javascript
 import React, { useMemo } from "react"
@@ -136,7 +138,7 @@ const MyComponent = () => {
 
 #### Query Json Batch
 
-Note: Its mandatory to persist (e.g. memoize the queries) otherwise a new task is created on every rerender.
+**Note:** Its mandatory to persist (e.g. memoize the queries) otherwise a new task is created on every rerender.
 
 ```javascript
 import React from "react"
