@@ -62,9 +62,11 @@ describe("useQuery", () => {
       </MqttProvider>
     )
 
+    const updatedTopic = "updatedTopic"
+
     rerender(
       <MqttProvider http={ http }>
-        <TestComponent topic={ "changedTopic" } />
+        <TestComponent topic={ updatedTopic } />
       </MqttProvider>
     )
 
@@ -75,7 +77,7 @@ describe("useQuery", () => {
 
     expect(http.query).toHaveBeenCalledTimes(1)
     expect(http.query.mock.calls[0][0]).toEqual({
-      topic: "changedTopic",
+      topic: updatedTopic,
       depth: defaultDepth,
       flatten: defaultFlatten,
       parseJson: defaultParseJson
@@ -89,9 +91,11 @@ describe("useQuery", () => {
       </MqttProvider>
     )
 
+    const updatedDepth = 1
+
     rerender(
       <MqttProvider http={ http }>
-        <TestComponent depth={ 1 } />
+        <TestComponent depth={ updatedDepth } />
       </MqttProvider>
     )
 
@@ -103,7 +107,7 @@ describe("useQuery", () => {
     expect(http.query).toHaveBeenCalledTimes(1)
     expect(http.query.mock.calls[0][0]).toEqual({
       topic: defaultTopic,
-      depth: 1,
+      depth: updatedDepth,
       flatten: defaultFlatten,
       parseJson: defaultParseJson
     })
@@ -116,9 +120,11 @@ describe("useQuery", () => {
       </MqttProvider>
     )
 
+    const updatedFlatten = true
+
     rerender(
       <MqttProvider http={ http }>
-        <TestComponent flatten />
+        <TestComponent flatten={ updatedFlatten } />
       </MqttProvider>
     )
 
@@ -131,7 +137,7 @@ describe("useQuery", () => {
     expect(http.query.mock.calls[0][0]).toEqual({
       topic: defaultTopic,
       depth: defaultDepth,
-      flatten: true,
+      flatten: updatedFlatten,
       parseJson: defaultParseJson
     })
   })
@@ -143,9 +149,11 @@ describe("useQuery", () => {
       </MqttProvider>
     )
 
+    const updatedParseJson = true
+
     rerender(
       <MqttProvider http={ http }>
-        <TestComponent parseJson />
+        <TestComponent parseJson={ updatedParseJson } />
       </MqttProvider>
     )
 
@@ -159,7 +167,7 @@ describe("useQuery", () => {
       topic: defaultTopic,
       depth: defaultDepth,
       flatten: defaultFlatten,
-      parseJson: true
+      parseJson: updatedParseJson
     })
   })
 

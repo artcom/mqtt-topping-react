@@ -2,13 +2,13 @@
 import { HttpClient } from "@artcom/mqtt-topping"
 import { createHttpClient } from "../src"
 
-const uri = "http://broker.test.local"
-
 describe("createHttpClient", () => {
   test("calls internal createHttpClient method", () => {
-    const httpClient = createHttpClient(uri)
+    const brokerUri = "http://broker.test.local"
+
+    const httpClient = createHttpClient(brokerUri)
 
     expect(httpClient).toBeInstanceOf(HttpClient)
-    expect(httpClient.uri).toBe(uri)
+    expect(httpClient.uri).toBe(brokerUri)
   })
 })

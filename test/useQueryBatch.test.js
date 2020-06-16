@@ -11,7 +11,9 @@ const query1 = { topic: "testTopic", depth: 0, flatten: false, parseJson: false 
 const query2 = { topic: "testTopic2", depth: 0, flatten: false, parseJson: false }
 const query3 = { topic: "testTopic3", depth: 0, flatten: false, parseJson: false }
 
-const TestComponent = ({ queries = [query1, query2] }) => {
+const defaultQueries = [query1, query2]
+
+const TestComponent = ({ queries = defaultQueries }) => {
   useQueryBatch(queries)
   return <></>
 }
@@ -44,28 +46,6 @@ describe("useQueryBatch", () => {
     expect(http.queryBatch.mock.calls[0][0]).toEqual([query1, query2])
   })
 
-  it("should not create a new query task for same queries", () => {
-    const queries = [query1, query2, query3]
-
-    const { rerender } = render(
-      <MqttProvider http={ http }>
-        <TestComponent queries={ queries } />
-      </MqttProvider>
-    )
-
-    rerender(
-      <MqttProvider http={ http }>
-        <TestComponent queries={ queries } />
-      </MqttProvider>
-    )
-
-    expect(useAsyncTask).toHaveBeenCalledTimes(2)
-    const task1 = useAsyncTask.mock.calls[0][0]
-    const task2 = useAsyncTask.mock.calls[1][0]
-
-    expect(task1).toBe(task2)
-  })
-
   it("should create a query batch task hook with changed queries", () => {
     const { rerender } = render(
       <MqttProvider http={ http }>
@@ -75,7 +55,7 @@ describe("useQueryBatch", () => {
 
     rerender(
       <MqttProvider http={ http }>
-        <TestComponent queries={ [query1, query3, query2] } />
+        <TestComponent queries={ [query1, query2, query3] } />
       </MqttProvider>
     )
 
@@ -85,6 +65,26 @@ describe("useQueryBatch", () => {
     task() // run created task manually
 
     expect(http.queryBatch).toHaveBeenCalledTimes(1)
-    expect(http.queryBatch.mock.calls[0][0]).toEqual([query1, query3, query2])
+    expect(http.queryBatch.mock.calls[0][0]).toEqual([query1, query2, query3])
+  })
+
+  it("should not create a new query task for same queries", () => {
+    const { rerender } = render(
+      <MqttProvider http={ http }>
+        <TestComponent />
+      </MqttProvider>
+    )
+
+    rerender(
+      <MqttProvider http={ http }>
+        <TestComponent />
+      </MqttProvider>
+    )
+
+    expect(useAsyncTask).toHaveBeenCalledTimes(2)
+    const task1 = useAsyncTask.mock.calls[0][0]
+    const task2 = useAsyncTask.mock.calls[1][0]
+
+    expect(task1).toBe(task2)
   })
 })

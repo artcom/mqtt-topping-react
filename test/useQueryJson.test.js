@@ -49,9 +49,11 @@ describe("useQueryJson", () => {
       </MqttProvider>
     )
 
+    const updatedTopic = "updatedTopic"
+
     rerender(
       <MqttProvider http={ http }>
-        <TestComponent topic={ "changedTopic" } />
+        <TestComponent topic={ updatedTopic } />
       </MqttProvider>
     )
 
@@ -61,7 +63,7 @@ describe("useQueryJson", () => {
     task() // run created task manually
 
     expect(http.queryJson).toHaveBeenCalledTimes(1)
-    expect(http.queryJson.mock.calls[0][0]).toEqual("changedTopic")
+    expect(http.queryJson.mock.calls[0][0]).toEqual(updatedTopic)
   })
 
   it("should not create a new query task for same topic", () => {

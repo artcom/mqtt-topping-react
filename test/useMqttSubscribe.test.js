@@ -21,7 +21,6 @@ describe("useMqttSubscribe", () => {
   beforeEach(() => {
     mqtt = {
       subscribe: jest.fn(),
-      publish: jest.fn(),
       unsubscribe: jest.fn()
     }
   })
@@ -89,7 +88,7 @@ describe("useMqttSubscribe", () => {
       </MqttProvider>
     )
 
-    const updatedTopic = () => null
+    const updatedTopic = "updatedTopic"
 
     rerender(
       <MqttProvider mqtt={ mqtt }>

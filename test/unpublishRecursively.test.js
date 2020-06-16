@@ -1,10 +1,12 @@
+/* eslint-disable import/first */
+jest.mock("@artcom/mqtt-topping", () => ({ unpublishRecursively: jest.fn() }))
+
+import * as topping from "@artcom/mqtt-topping"
 import React, { useContext } from "react"
 import { render } from "@testing-library/react"
 import { MqttContext, MqttProvider } from "../src"
 
 const topic = "testTopic"
-const subTopic1 = "testTopic/subTopic1"
-const subTopic2 = "testTopic/subTopic2"
 
 const Component = () => {
   useContext(MqttContext).unpublishRecursively(topic)
@@ -17,12 +19,8 @@ describe("UnpublishRecursively", () => {
   let http
 
   beforeAll(() => {
-    mqtt = { unpublish: jest.fn() }
-    http = { query: jest.fn().mockResolvedValue([
-      { topic },
-      { topic: subTopic1, payload: "foo" },
-      { topic: subTopic2, payload: "bar" }
-    ]) }
+    mqtt = "mqtt"
+    http = "http"
   })
 
   it("should unpublish a given topic", async () => {
@@ -32,10 +30,6 @@ describe("UnpublishRecursively", () => {
       </MqttProvider>
     )
 
-    await new Promise(resolve => setTimeout(resolve, 100)) // give the unpublish method some time
-
-    expect(http.query).toHaveBeenCalledWith({ topic, depth: -1, flatten: true, parseJson: false })
-    expect(mqtt.unpublish).toHaveBeenNthCalledWith(1, subTopic1)
-    expect(mqtt.unpublish).toHaveBeenNthCalledWith(2, subTopic2)
+    expect(topping.unpublishRecursively).toHaveBeenCalledWith("mqtt", "http", "testTopic")
   })
 })
