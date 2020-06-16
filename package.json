@@ -3,7 +3,8 @@
   "version": "1.2.3",
   "description": "Wraps the Art+Com Mqtt Topping library for react.",
   "files": [
-    "lib/"
+    "lib/",
+    "src/"
   ],
   "main": "lib/index.js",
   "repository": {
