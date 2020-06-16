@@ -59,7 +59,7 @@ import React, { useContext } from "react"
 import { MqttContext } from "@artcom/mqtt-topping-react"
 
 const MyComponent = ({ payload }) => {
-  useContext(MqttContext).publish("myTopic", payload)
+  useContext(MqttContext).mqtt.publish("myTopic", payload)
 
   return <></>
 }
@@ -72,7 +72,7 @@ import React, { useContext } from "react"
 import { MqttContext } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
-  useContext(MqttContext).unpublish("myTopic")
+  useContext(MqttContext).mqtt.unpublish("myTopic")
 
   return <></>
 }
