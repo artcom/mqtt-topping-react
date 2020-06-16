@@ -1,3 +1,4 @@
+import { RUNNING, FINISHED, ERROR } from "@artcom/async-task-hook"
 import connectMqttClient from "./connectMqttClient"
 import createHttpClient from "./createHttpClient"
 import { MqttProvider, MqttContext } from "./mqttProvider"
@@ -16,5 +17,8 @@ export {
   useQuery,
   useQueryBatch,
   useQueryJson,
-  useQueryJsonBatch
+  useQueryJsonBatch,
+  RUNNING,
+  FINISHED,
+  ERROR
 }
