@@ -91,15 +91,16 @@ To query topics via the [retained topic HiveMQ plugin](https://github.com/artcom
 
 ```javascript
 import React from "react"
-import { useQuery } from "@artcom/mqtt-topping-react"
+import { useQuery, RUNNING; FINISHED, ERROR } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
-  const query = { topic: "myTopic", depth: 0, flatten: false, parseJson: true }
-  const result = useQuery(query)
+  const query = useQuery({ topic: "myTopic", depth: 0, flatten: false, parseJson: true })
 
-  // render result
-
-  return <></>
+  switch (query.status) {
+    case RUNNING: console.log("Loading"); return <>Loading...</>
+    case FINISHED: console.log("Finished"); return <>{ JSON.stringify(query.result) }</>
+    case ERROR: console.log("Error"); return <>{ query.error.message }</>
+  }
 }
 ```
 
@@ -109,15 +110,17 @@ const MyComponent = () => {
 
 ```javascript
 import React, { useMemo } from "react"
-import { useQueryBatch } from "@artcom/mqtt-topping-react"
+import { useQueryBatch, RUNNING; FINISHED, ERROR } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
   const queries = useMemo([{ topic: "topic1", depth: 1 }, { topic: "topic2", depth: 0 }], [])
-  const result = useQueryBatch(queries)
+  const query = useQueryBatch(queries)
 
-  // render result
-
-  return <></>
+  switch (query.status) {
+    case RUNNING: console.log("Loading"); return <>Loading...</>
+    case FINISHED: console.log("Finished"); return <>{ JSON.stringify(query.result) }</>
+    case ERROR: console.log("Error"); return <>{ query.error.message }</>
+  }
 }
 ```
 
@@ -125,14 +128,16 @@ const MyComponent = () => {
 
 ```javascript
 import React from "react"
-import { useQueryJson } from "@artcom/mqtt-topping-react"
+import { useQueryJson, RUNNING; FINISHED, ERROR } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
-  const result = useQueryJson("myTopic")
+  const query = useQueryJson("myTopic")
 
-  // render result
-
-  return <></>
+  switch (query.status) {
+    case RUNNING: console.log("Loading"); return <>Loading...</>
+    case FINISHED: console.log("Finished"); return <>{ JSON.stringify(query.result) }</>
+    case ERROR: console.log("Error"); return <>{ query.error.message }</>
+  }
 }
 ```
 
@@ -142,15 +147,17 @@ const MyComponent = () => {
 
 ```javascript
 import React from "react"
-import { useQueryJsonBatch } from "@artcom/mqtt-topping-react"
+import { useQueryJsonBatch, RUNNING; FINISHED, ERROR } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
   const queries = useMemo(["topic1", "topic2"], [])
-  const result = useQueryJsonBatch(queries)
+  const query = useQueryJsonBatch(queries)
 
-  // render result
-
-  return <></>
+  switch (query.status) {
+    case RUNNING: console.log("Loading"); return <>Loading...</>
+    case FINISHED: console.log("Finished"); return <>{ JSON.stringify(query.result) }</>
+    case ERROR: console.log("Error"); return <>{ query.error.message }</>
+  }
 }
 ```
 
