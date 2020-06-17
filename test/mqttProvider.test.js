@@ -15,7 +15,7 @@ describe("MqttProvider", () => {
   let mqttClient
   let httpClient
 
-  beforeAll(() => {
+  beforeEach(() => {
     mqttClient = createMqttClientMock()
     httpClient = createHttpClientMock()
   })
