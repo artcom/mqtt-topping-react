@@ -6,6 +6,7 @@ import React from "react"
 import { render } from "@testing-library/react"
 import { MqttProvider } from "../src/mqttProvider"
 import { useQueryJson } from "../src"
+import { createHttpClientMock } from "./utils"
 
 const defaultTopic = "testTopic"
 
@@ -15,19 +16,17 @@ const TestComponent = ({ topic = defaultTopic }) => {
 }
 
 describe("useQueryJson", () => {
-  let http
+  let httpClient
 
   beforeEach(() => {
     useAsyncTask.mockReset()
 
-    http = {
-      queryJson: jest.fn()
-    }
+    httpClient = createHttpClientMock()
   })
 
   it("should create a query task hook with provided arguments", () => {
     render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
@@ -38,13 +37,13 @@ describe("useQueryJson", () => {
 
     task() // run created task manually
 
-    expect(http.queryJson).toHaveBeenCalledTimes(1)
-    expect(http.queryJson.mock.calls[0][0]).toEqual(defaultTopic)
+    expect(httpClient.queryJson).toHaveBeenCalledTimes(1)
+    expect(httpClient.queryJson.mock.calls[0][0]).toEqual(defaultTopic)
   })
 
   it("should create a query task hook with changed topic", () => {
     const { rerender } = render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
@@ -52,7 +51,7 @@ describe("useQueryJson", () => {
     const updatedTopic = "updatedTopic"
 
     rerender(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent topic={ updatedTopic } />
       </MqttProvider>
     )
@@ -62,19 +61,19 @@ describe("useQueryJson", () => {
 
     task() // run created task manually
 
-    expect(http.queryJson).toHaveBeenCalledTimes(1)
-    expect(http.queryJson.mock.calls[0][0]).toEqual(updatedTopic)
+    expect(httpClient.queryJson).toHaveBeenCalledTimes(1)
+    expect(httpClient.queryJson.mock.calls[0][0]).toEqual(updatedTopic)
   })
 
   it("should not create a new query task for same topic", () => {
     const { rerender } = render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
 
     rerender(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )

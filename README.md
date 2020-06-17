@@ -27,7 +27,7 @@ async function start() {
   const httpClient = createHttpClient("http://broker.test.local:8080")
 
   render(
-    <MqttProvider mqtt={ mqttClient } http={ httpClient }>
+    MqttProvider mqttClient={ mqttClient } httpClient={ httpClient }>
       // render app
     </MqttProvider>
   )
@@ -59,7 +59,7 @@ import React, { useContext } from "react"
 import { MqttContext } from "@artcom/mqtt-topping-react"
 
 const MyComponent = ({ payload }) => {
-  useContext(MqttContext).mqtt.publish("myTopic", payload)
+  useContext(MqttContext).publish("myTopic", payload)
 
   return <></>
 }
@@ -72,7 +72,7 @@ import React, { useContext } from "react"
 import { MqttContext } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
-  useContext(MqttContext).mqtt.unpublish("myTopic")
+  useContext(MqttContext).unpublish("myTopic")
 
   return <></>
 }

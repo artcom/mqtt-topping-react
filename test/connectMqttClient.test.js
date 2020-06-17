@@ -11,9 +11,9 @@ describe("connectMqttClient", () => {
     const brokerUri = "broker.test.local"
     const appId = "testId"
 
-    const mqtt = await connectMqttClient(brokerUri, appId)
+    const mqttClient = await connectMqttClient(brokerUri, appId)
 
     expect(topping.connectMqttClient).toHaveBeenCalledWith(brokerUri, expect.anything())
-    expect(mqtt).toBe("mqtt")
+    expect(mqttClient).toBe("mqtt")
   })
 })

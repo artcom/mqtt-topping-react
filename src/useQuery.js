@@ -5,9 +5,9 @@ import { useContext, useCallback } from "react"
 import { MqttContext } from "./mqttProvider"
 
 export default ({ topic, depth, flatten, parseJson }) => {
-  const { http } = useContext(MqttContext)
+  const { query } = useContext(MqttContext)
   const task = useCallback(
-    () => http.query({ topic, depth, flatten, parseJson }),
+    () => query({ topic, depth, flatten, parseJson }),
     [topic, depth, flatten, parseJson]
   )
 

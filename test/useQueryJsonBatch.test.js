@@ -6,6 +6,7 @@ import React from "react"
 import { render } from "@testing-library/react"
 import { MqttProvider } from "../src/mqttProvider"
 import { useQueryJsonBatch } from "../src"
+import { createHttpClientMock } from "./utils"
 
 const defaultTopics = ["testTopic1", "testTopic2"]
 
@@ -15,19 +16,17 @@ const TestComponent = ({ topics = defaultTopics }) => {
 }
 
 describe("useQueryJsonBatch", () => {
-  let http
+  let httpClient
 
   beforeEach(() => {
     useAsyncTask.mockReset()
 
-    http = {
-      queryJsonBatch: jest.fn()
-    }
+    httpClient = createHttpClientMock()
   })
 
   it("should create a queryJsonBatch task hook with provided arguments", () => {
     render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
@@ -38,13 +37,13 @@ describe("useQueryJsonBatch", () => {
 
     task() // run created task manually
 
-    expect(http.queryJsonBatch).toHaveBeenCalledTimes(1)
-    expect(http.queryJsonBatch.mock.calls[0][0]).toEqual(defaultTopics)
+    expect(httpClient.queryJsonBatch).toHaveBeenCalledTimes(1)
+    expect(httpClient.queryJsonBatch.mock.calls[0][0]).toEqual(defaultTopics)
   })
 
   it("should create a query batch task hook with changed queries", () => {
     const { rerender } = render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
@@ -52,7 +51,7 @@ describe("useQueryJsonBatch", () => {
     const updatedTopics = ["testTopic1", "testTopic2", "testTopic3"]
 
     rerender(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent topics={ updatedTopics } />
       </MqttProvider>
     )
@@ -62,19 +61,19 @@ describe("useQueryJsonBatch", () => {
 
     task() // run created task manually
 
-    expect(http.queryJsonBatch).toHaveBeenCalledTimes(1)
-    expect(http.queryJsonBatch.mock.calls[0][0]).toEqual(updatedTopics)
+    expect(httpClient.queryJsonBatch).toHaveBeenCalledTimes(1)
+    expect(httpClient.queryJsonBatch.mock.calls[0][0]).toEqual(updatedTopics)
   })
 
   it("should not create a new query task for same queries", () => {
     const { rerender } = render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
 
     rerender(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )

@@ -5,7 +5,7 @@ import { useContext, useCallback } from "react"
 import { MqttContext } from "./mqttProvider"
 
 export default topic => {
-  const { http } = useContext(MqttContext)
-  const task = useCallback(() => http.queryJson(topic), [topic])
+  const { queryJson } = useContext(MqttContext)
+  const task = useCallback(() => queryJson(topic), [topic])
   return useAsyncTask(task)
 }

@@ -5,67 +5,56 @@ import * as topping from "@artcom/mqtt-topping"
 import React, { useContext } from "react"
 import { render } from "@testing-library/react"
 import { MqttContext, MqttProvider } from "../src"
+import { createMqttClientMock, createHttpClientMock } from "./utils"
 
 const topic = "testTopic"
 const payload = "testPayload"
 const options = { qos: 2, stringifyJson: true, retain: true }
 
 describe("MqttProvider", () => {
+  let mqttClient
+  let httpClient
+
+  beforeAll(() => {
+    mqttClient = createMqttClientMock()
+    httpClient = createHttpClientMock()
+  })
+
   describe("Publish", () => {
-    let mqtt
-
-    beforeAll(() => {
-      mqtt = { publish: jest.fn() }
-    })
-
     it("should publish given payload for given topic", () => {
       const PublishComponent = () => {
-        useContext(MqttContext).mqtt.publish(topic, payload, options)
+        useContext(MqttContext).publish(topic, payload, options)
         return <></>
       }
 
       render(
-        <MqttProvider mqtt={ mqtt }>
+        <MqttProvider mqttClient={ mqttClient }>
           <PublishComponent />
         </MqttProvider>
       )
 
-      expect(mqtt.publish).toHaveBeenCalledWith(topic, payload, options)
+      expect(mqttClient.publish).toHaveBeenCalledWith(topic, payload, options)
     })
   })
 
   describe("Unpublish", () => {
-    let mqtt
-
-    beforeAll(() => {
-      mqtt = { unpublish: jest.fn() }
-    })
-
     it("should unpublish a given topic", () => {
       const UnpublishComponent = () => {
-        useContext(MqttContext).mqtt.unpublish(topic)
+        useContext(MqttContext).unpublish(topic)
         return <></>
       }
 
       render(
-        <MqttProvider mqtt={ mqtt }>
+        <MqttProvider mqttClient={ mqttClient }>
           <UnpublishComponent />
         </MqttProvider>
       )
 
-      expect(mqtt.unpublish).toHaveBeenCalledWith(topic)
+      expect(mqttClient.unpublish).toHaveBeenCalledWith(topic)
     })
   })
 
   describe("UnpublishRecursively", () => {
-    let mqtt
-    let http
-
-    beforeAll(() => {
-      mqtt = "mqtt"
-      http = "http"
-    })
-
     it("should unpublish a given topic", async () => {
       const Component = () => {
         useContext(MqttContext).unpublishRecursively(topic)
@@ -73,12 +62,12 @@ describe("MqttProvider", () => {
       }
 
       render(
-        <MqttProvider mqtt={ mqtt } http={ http }>
+        <MqttProvider mqttClient={ mqttClient } httpClient={ httpClient }>
           <Component />
         </MqttProvider>
       )
 
-      expect(topping.unpublishRecursively).toHaveBeenCalledWith("mqtt", "http", "testTopic")
+      expect(topping.unpublishRecursively).toHaveBeenCalledWith(mqttClient, httpClient, "testTopic")
     })
   })
 })

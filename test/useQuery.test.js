@@ -6,6 +6,8 @@ import React from "react"
 import { render } from "@testing-library/react"
 import { MqttProvider } from "../src/mqttProvider"
 import { useQuery } from "../src"
+import { createHttpClientMock } from "./utils"
+
 
 const defaultTopic = "testTopic"
 const defaultDepth = 0
@@ -23,19 +25,17 @@ const TestComponent = ({
 }
 
 describe("useQuery", () => {
-  let http
+  let httpClient
 
   beforeEach(() => {
     useAsyncTask.mockReset()
 
-    http = {
-      query: jest.fn()
-    }
+    httpClient = createHttpClientMock()
   })
 
   it("should create a query task hook with provided arguments", () => {
     render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
@@ -46,8 +46,8 @@ describe("useQuery", () => {
 
     task() // run created task manually
 
-    expect(http.query).toHaveBeenCalledTimes(1)
-    expect(http.query.mock.calls[0][0]).toEqual({
+    expect(httpClient.query).toHaveBeenCalledTimes(1)
+    expect(httpClient.query.mock.calls[0][0]).toEqual({
       topic: defaultTopic,
       depth: defaultDepth,
       flatten: defaultFlatten,
@@ -57,7 +57,7 @@ describe("useQuery", () => {
 
   it("should create a query task hook with changed 'topic'", () => {
     const { rerender } = render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
@@ -65,7 +65,7 @@ describe("useQuery", () => {
     const updatedTopic = "updatedTopic"
 
     rerender(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent topic={ updatedTopic } />
       </MqttProvider>
     )
@@ -75,8 +75,8 @@ describe("useQuery", () => {
 
     task() // run created task manually
 
-    expect(http.query).toHaveBeenCalledTimes(1)
-    expect(http.query.mock.calls[0][0]).toEqual({
+    expect(httpClient.query).toHaveBeenCalledTimes(1)
+    expect(httpClient.query.mock.calls[0][0]).toEqual({
       topic: updatedTopic,
       depth: defaultDepth,
       flatten: defaultFlatten,
@@ -86,7 +86,7 @@ describe("useQuery", () => {
 
   it("should create a query task hook with changed 'depth'", () => {
     const { rerender } = render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
@@ -94,7 +94,7 @@ describe("useQuery", () => {
     const updatedDepth = 1
 
     rerender(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent depth={ updatedDepth } />
       </MqttProvider>
     )
@@ -104,8 +104,8 @@ describe("useQuery", () => {
 
     task() // run created task manually
 
-    expect(http.query).toHaveBeenCalledTimes(1)
-    expect(http.query.mock.calls[0][0]).toEqual({
+    expect(httpClient.query).toHaveBeenCalledTimes(1)
+    expect(httpClient.query.mock.calls[0][0]).toEqual({
       topic: defaultTopic,
       depth: updatedDepth,
       flatten: defaultFlatten,
@@ -115,7 +115,7 @@ describe("useQuery", () => {
 
   it("should create a query task hook with changed 'flatten'", () => {
     const { rerender } = render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
@@ -123,7 +123,7 @@ describe("useQuery", () => {
     const updatedFlatten = true
 
     rerender(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent flatten={ updatedFlatten } />
       </MqttProvider>
     )
@@ -133,8 +133,8 @@ describe("useQuery", () => {
 
     task() // run created task manually
 
-    expect(http.query).toHaveBeenCalledTimes(1)
-    expect(http.query.mock.calls[0][0]).toEqual({
+    expect(httpClient.query).toHaveBeenCalledTimes(1)
+    expect(httpClient.query.mock.calls[0][0]).toEqual({
       topic: defaultTopic,
       depth: defaultDepth,
       flatten: updatedFlatten,
@@ -144,7 +144,7 @@ describe("useQuery", () => {
 
   it("should create a query task hook with changed 'parseJson'", () => {
     const { rerender } = render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
@@ -152,7 +152,7 @@ describe("useQuery", () => {
     const updatedParseJson = true
 
     rerender(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent parseJson={ updatedParseJson } />
       </MqttProvider>
     )
@@ -162,8 +162,8 @@ describe("useQuery", () => {
 
     task() // run created task manually
 
-    expect(http.query).toHaveBeenCalledTimes(1)
-    expect(http.query.mock.calls[0][0]).toEqual({
+    expect(httpClient.query).toHaveBeenCalledTimes(1)
+    expect(httpClient.query.mock.calls[0][0]).toEqual({
       topic: defaultTopic,
       depth: defaultDepth,
       flatten: defaultFlatten,
@@ -173,13 +173,13 @@ describe("useQuery", () => {
 
   it("should not create a new query task for equal query arguments", () => {
     const { rerender } = render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
 
     rerender(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )

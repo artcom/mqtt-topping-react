@@ -6,6 +6,7 @@ import React from "react"
 import { render } from "@testing-library/react"
 import { MqttProvider } from "../src/mqttProvider"
 import { useQueryBatch } from "../src"
+import { createHttpClientMock } from "./utils"
 
 const query1 = { topic: "testTopic", depth: 0, flatten: false, parseJson: false }
 const query2 = { topic: "testTopic2", depth: 0, flatten: false, parseJson: false }
@@ -19,19 +20,17 @@ const TestComponent = ({ queries = defaultQueries }) => {
 }
 
 describe("useQueryBatch", () => {
-  let http
+  let httpClient
 
   beforeEach(() => {
     useAsyncTask.mockReset()
 
-    http = {
-      queryBatch: jest.fn()
-    }
+    httpClient = createHttpClientMock()
   })
 
   it("should create a queryBatch task hook with provided arguments", () => {
     render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
@@ -42,19 +41,19 @@ describe("useQueryBatch", () => {
 
     task() // run created task manually
 
-    expect(http.queryBatch).toHaveBeenCalledTimes(1)
-    expect(http.queryBatch.mock.calls[0][0]).toEqual([query1, query2])
+    expect(httpClient.queryBatch).toHaveBeenCalledTimes(1)
+    expect(httpClient.queryBatch.mock.calls[0][0]).toEqual([query1, query2])
   })
 
   it("should create a query batch task hook with changed queries", () => {
     const { rerender } = render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
 
     rerender(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent queries={ [query1, query2, query3] } />
       </MqttProvider>
     )
@@ -64,19 +63,19 @@ describe("useQueryBatch", () => {
 
     task() // run created task manually
 
-    expect(http.queryBatch).toHaveBeenCalledTimes(1)
-    expect(http.queryBatch.mock.calls[0][0]).toEqual([query1, query2, query3])
+    expect(httpClient.queryBatch).toHaveBeenCalledTimes(1)
+    expect(httpClient.queryBatch.mock.calls[0][0]).toEqual([query1, query2, query3])
   })
 
   it("should not create a new query task for same queries", () => {
     const { rerender } = render(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
 
     rerender(
-      <MqttProvider http={ http }>
+      <MqttProvider httpClient={ httpClient }>
         <TestComponent />
       </MqttProvider>
     )
