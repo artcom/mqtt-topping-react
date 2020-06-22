@@ -20,10 +20,10 @@ Create an MQTT context with an MQTT and HTTP client.
 
 ```javascript
 import React from "react"
-import { connectMqttClient, createHttpClient, MqttProvider } from "@artcom/mqtt-topping-react"
+import { connectAsync, createHttpClient, MqttProvider } from "@artcom/mqtt-topping-react"
 
 async function start() {
-  const mqttClient = await connectMqttClient("ws://broker.test.local:1883", "testClientId")
+  const mqttClient = await connectAsync("ws://broker.test.local:1883", "testClientId")
   const httpClient = createHttpClient("http://broker.test.local:8080")
 
   render(
