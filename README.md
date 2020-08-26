@@ -154,7 +154,7 @@ const MyComponent = () => {
 **Note:** Its mandatory to persist (e.g. memoize the queries) otherwise a new task is created on every rerender.
 
 ```javascript
-import React from "react"
+import React, { useMemo } from "react"
 import { useQueryJsonBatch, RUNNING, FINISHED, ERROR } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
