@@ -121,7 +121,7 @@ import React, { useMemo } from "react"
 import { useQueryBatch, RUNNING, FINISHED, ERROR } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
-  const queries = useMemo([{ topic: "topic1", depth: 1 }, { topic: "topic2", depth: 0 }], [])
+  const queries = useMemo(() => [{ topic: "topic1", depth: 1 }, { topic: "topic2", depth: 0 }], [])
   const query = useQueryBatch(queries)
 
   switch (query.status) {
@@ -158,7 +158,7 @@ import React, { useMemo } from "react"
 import { useQueryJsonBatch, RUNNING, FINISHED, ERROR } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
-  const queries = useMemo(["topic1", "topic2"], [])
+  const queries = useMemo(() => ["topic1", "topic2"], [])
   const query = useQueryJsonBatch(queries)
 
   switch (query.status) {
