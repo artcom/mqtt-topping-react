@@ -121,7 +121,7 @@ import React, { useMemo } from "react"
 import { useQueryBatch, RUNNING, FINISHED, ERROR } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
-  const queries = useMemo([{ topic: "topic1", depth: 1 }, { topic: "topic2", depth: 0 }], [])
+  const queries = useMemo(() => [{ topic: "topic1", depth: 1 }, { topic: "topic2", depth: 0 }], [])
   const query = useQueryBatch(queries)
 
   switch (query.status) {
@@ -154,11 +154,11 @@ const MyComponent = () => {
 **Note:** Its mandatory to persist (e.g. memoize the queries) otherwise a new task is created on every rerender.
 
 ```javascript
-import React from "react"
+import React, { useMemo } from "react"
 import { useQueryJsonBatch, RUNNING, FINISHED, ERROR } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
-  const queries = useMemo(["topic1", "topic2"], [])
+  const queries = useMemo(() => ["topic1", "topic2"], [])
   const query = useQueryJsonBatch(queries)
 
   switch (query.status) {
