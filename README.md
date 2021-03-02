@@ -27,7 +27,7 @@ async function start() {
   const httpClient = createHttpClient("http://broker.test.local:8080")
 
   render(
-    MqttProvider mqttClient={ mqttClient } httpClient={ httpClient }>
+    <MqttProvider mqttClient={ mqttClient } httpClient={ httpClient }>
       // render app
     </MqttProvider>
   )
