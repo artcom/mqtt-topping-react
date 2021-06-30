@@ -23,7 +23,7 @@ import React from "react"
 import { connectAsync, createHttpClient, MqttProvider } from "@artcom/mqtt-topping-react"
 
 async function start() {
-  const mqttClient = await connectAsync("ws://broker.test.local:1883", { clientId: "testClientId"})
+  const mqttClient = await connectAsync("ws://broker.test.local:1883", { clientId: "testClientId" })
   const httpClient = createHttpClient("http://broker.test.local:8080")
 
   render(
