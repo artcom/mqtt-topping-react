@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 
+/* eslint-disable import/first */
 jest.mock("@artcom/mqtt-topping", () => ({ unpublishRecursively: jest.fn() }))
 
 import * as topping from "@artcom/mqtt-topping"

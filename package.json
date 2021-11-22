@@ -19,7 +19,7 @@
     "async"
   ],
   "scripts": {
-    "lint": "eslint src --fix",
+    "lint": "eslint src test --fix",
     "build": "babel src --out-dir lib --source-maps",
     "test": "jest",
     "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",

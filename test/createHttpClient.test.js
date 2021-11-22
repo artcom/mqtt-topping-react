@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 import { HttpClient } from "@artcom/mqtt-topping"
 import { createHttpClient } from "../src"
 
