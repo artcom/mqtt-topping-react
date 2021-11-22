@@ -1,4 +1,7 @@
-/* eslint-disable import/first */
+/**
+ * @jest-environment jsdom
+ */
+
 jest.mock("@artcom/async-task-hook", () => ({ useAsyncTask: jest.fn() }))
 
 import { useAsyncTask } from "@artcom/async-task-hook"
