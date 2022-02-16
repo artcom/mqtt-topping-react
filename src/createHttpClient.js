@@ -1,3 +1,3 @@
 import { HttpClient } from "@artcom/mqtt-topping"
 
-export default httpBrokerUri => new HttpClient(httpBrokerUri)
+export default (httpBrokerUri) => new HttpClient(httpBrokerUri)

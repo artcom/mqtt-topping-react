@@ -12,7 +12,6 @@ import { MqttProvider } from "../src/mqttProvider"
 import { useQuery } from "../src"
 import { createHttpClientMock } from "./utils"
 
-
 const defaultTopic = "testTopic"
 const defaultDepth = 0
 const defaultFlatten = false
@@ -22,7 +21,8 @@ const TestComponent = ({
   topic = defaultTopic,
   depth = defaultDepth,
   flatten = defaultFlatten,
-  parseJson = defaultParseJson }) => {
+  parseJson = defaultParseJson,
+}) => {
   useQuery({ topic, depth, flatten, parseJson })
 
   return <></>
@@ -39,11 +39,10 @@ describe("useQuery", () => {
 
   it("should create a query task hook with provided arguments", () => {
     render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
-
 
     expect(useAsyncTask).toHaveBeenCalledTimes(1)
     const task = useAsyncTask.mock.calls[0][0]
@@ -55,23 +54,23 @@ describe("useQuery", () => {
       topic: defaultTopic,
       depth: defaultDepth,
       flatten: defaultFlatten,
-      parseJson: defaultParseJson
+      parseJson: defaultParseJson,
     })
   })
 
   it("should create a query task hook with changed 'topic'", () => {
     const { rerender } = render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     const updatedTopic = "updatedTopic"
 
     rerender(
-      <MqttProvider httpClient={ httpClient }>
-        <TestComponent topic={ updatedTopic } />
-      </MqttProvider>
+      <MqttProvider httpClient={httpClient}>
+        <TestComponent topic={updatedTopic} />
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -84,23 +83,23 @@ describe("useQuery", () => {
       topic: updatedTopic,
       depth: defaultDepth,
       flatten: defaultFlatten,
-      parseJson: defaultParseJson
+      parseJson: defaultParseJson,
     })
   })
 
   it("should create a query task hook with changed 'depth'", () => {
     const { rerender } = render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     const updatedDepth = 1
 
     rerender(
-      <MqttProvider httpClient={ httpClient }>
-        <TestComponent depth={ updatedDepth } />
-      </MqttProvider>
+      <MqttProvider httpClient={httpClient}>
+        <TestComponent depth={updatedDepth} />
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -113,23 +112,23 @@ describe("useQuery", () => {
       topic: defaultTopic,
       depth: updatedDepth,
       flatten: defaultFlatten,
-      parseJson: defaultParseJson
+      parseJson: defaultParseJson,
     })
   })
 
   it("should create a query task hook with changed 'flatten'", () => {
     const { rerender } = render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     const updatedFlatten = true
 
     rerender(
-      <MqttProvider httpClient={ httpClient }>
-        <TestComponent flatten={ updatedFlatten } />
-      </MqttProvider>
+      <MqttProvider httpClient={httpClient}>
+        <TestComponent flatten={updatedFlatten} />
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -142,23 +141,23 @@ describe("useQuery", () => {
       topic: defaultTopic,
       depth: defaultDepth,
       flatten: updatedFlatten,
-      parseJson: defaultParseJson
+      parseJson: defaultParseJson,
     })
   })
 
   it("should create a query task hook with changed 'parseJson'", () => {
     const { rerender } = render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     const updatedParseJson = true
 
     rerender(
-      <MqttProvider httpClient={ httpClient }>
-        <TestComponent parseJson={ updatedParseJson } />
-      </MqttProvider>
+      <MqttProvider httpClient={httpClient}>
+        <TestComponent parseJson={updatedParseJson} />
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -171,21 +170,21 @@ describe("useQuery", () => {
       topic: defaultTopic,
       depth: defaultDepth,
       flatten: defaultFlatten,
-      parseJson: updatedParseJson
+      parseJson: updatedParseJson,
     })
   })
 
   it("should not create a new query task for equal query arguments", () => {
     const { rerender } = render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     rerender(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)

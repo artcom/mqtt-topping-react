@@ -30,11 +30,10 @@ describe("useQueryJson", () => {
 
   it("should create a query task hook with provided arguments", () => {
     render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
-
 
     expect(useAsyncTask).toHaveBeenCalledTimes(1)
     const task = useAsyncTask.mock.calls[0][0]
@@ -47,17 +46,17 @@ describe("useQueryJson", () => {
 
   it("should create a query task hook with changed topic", () => {
     const { rerender } = render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     const updatedTopic = "updatedTopic"
 
     rerender(
-      <MqttProvider httpClient={ httpClient }>
-        <TestComponent topic={ updatedTopic } />
-      </MqttProvider>
+      <MqttProvider httpClient={httpClient}>
+        <TestComponent topic={updatedTopic} />
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -71,15 +70,15 @@ describe("useQueryJson", () => {
 
   it("should not create a new query task for same topic", () => {
     const { rerender } = render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     rerender(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)

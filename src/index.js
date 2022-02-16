@@ -8,7 +8,6 @@ import useQueryBatch from "./useQueryBatch"
 import useQueryJson from "./useQueryJson"
 import useQueryJsonBatch from "./useQueryJsonBatch"
 
-
 export {
   connect,
   connectAsync,
@@ -22,5 +21,5 @@ export {
   useQueryJsonBatch,
   RUNNING,
   FINISHED,
-  ERROR
+  ERROR,
 }

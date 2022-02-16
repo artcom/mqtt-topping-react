@@ -34,11 +34,10 @@ describe("useQueryBatch", () => {
 
   it("should create a queryBatch task hook with provided arguments", () => {
     render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
-
 
     expect(useAsyncTask).toHaveBeenCalledTimes(1)
     const task = useAsyncTask.mock.calls[0][0]
@@ -51,15 +50,15 @@ describe("useQueryBatch", () => {
 
   it("should create a query batch task hook with changed queries", () => {
     const { rerender } = render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     rerender(
-      <MqttProvider httpClient={ httpClient }>
-        <TestComponent queries={ [query1, query2, query3] } />
-      </MqttProvider>
+      <MqttProvider httpClient={httpClient}>
+        <TestComponent queries={[query1, query2, query3]} />
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -73,15 +72,15 @@ describe("useQueryBatch", () => {
 
   it("should not create a new query task for same queries", () => {
     const { rerender } = render(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     rerender(
-      <MqttProvider httpClient={ httpClient }>
+      <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)

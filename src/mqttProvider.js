@@ -23,11 +23,7 @@ const MqttProvider = ({ children, mqttClient, httpClient }) => {
     context.unpublishRecursively = topping.unpublishRecursively.bind(null, mqttClient, httpClient)
   }
 
-  return (
-    <MqttContext.Provider
-      value={ context }>
-      { children }
-    </MqttContext.Provider>)
+  return <MqttContext.Provider value={context}>{children}</MqttContext.Provider>
 }
 
 export { MqttContext, MqttProvider }
