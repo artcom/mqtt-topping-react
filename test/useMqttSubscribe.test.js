@@ -32,7 +32,7 @@ describe("useMqttSubscribe", () => {
     render(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(mqttClient.subscribe).toHaveBeenCalledTimes(1)
@@ -44,13 +44,13 @@ describe("useMqttSubscribe", () => {
     const { unmount } = render(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     unmount(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(mqttClient.subscribe).toHaveBeenCalledTimes(1)
@@ -63,19 +63,19 @@ describe("useMqttSubscribe", () => {
     const { rerender } = render(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     rerender(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     rerender(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(mqttClient.subscribe).toHaveBeenCalledTimes(1)
@@ -87,7 +87,7 @@ describe("useMqttSubscribe", () => {
     const { rerender } = render(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     const updatedTopic = "updatedTopic"
@@ -95,7 +95,7 @@ describe("useMqttSubscribe", () => {
     rerender(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent topic={updatedTopic} />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(mqttClient.subscribe).toHaveBeenCalledTimes(2)
@@ -103,13 +103,13 @@ describe("useMqttSubscribe", () => {
       1,
       defaultTopic,
       defaultHandler,
-      defaultOptions,
+      defaultOptions
     )
     expect(mqttClient.subscribe).toHaveBeenNthCalledWith(
       2,
       updatedTopic,
       defaultHandler,
-      defaultOptions,
+      defaultOptions
     )
     expect(mqttClient.unsubscribe).toHaveBeenCalledTimes(1)
     expect(mqttClient.unsubscribe).toHaveBeenCalledWith(defaultTopic, defaultHandler)
@@ -119,7 +119,7 @@ describe("useMqttSubscribe", () => {
     const { rerender } = render(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     const updatedHandler = () => null
@@ -127,7 +127,7 @@ describe("useMqttSubscribe", () => {
     rerender(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent handler={updatedHandler} />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(mqttClient.subscribe).toHaveBeenCalledTimes(2)
@@ -135,13 +135,13 @@ describe("useMqttSubscribe", () => {
       1,
       defaultTopic,
       defaultHandler,
-      defaultOptions,
+      defaultOptions
     )
     expect(mqttClient.subscribe).toHaveBeenNthCalledWith(
       2,
       defaultTopic,
       updatedHandler,
-      defaultOptions,
+      defaultOptions
     )
     expect(mqttClient.unsubscribe).toHaveBeenCalledTimes(1)
     expect(mqttClient.unsubscribe).toHaveBeenCalledWith(defaultTopic, defaultHandler)
@@ -151,7 +151,7 @@ describe("useMqttSubscribe", () => {
     const { rerender } = render(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     const updatedOptions = { qos: 0, parseJson: true }
@@ -159,7 +159,7 @@ describe("useMqttSubscribe", () => {
     rerender(
       <MqttProvider mqttClient={mqttClient}>
         <TestComponent options={updatedOptions} />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(mqttClient.subscribe).toHaveBeenCalledTimes(2)
@@ -167,13 +167,13 @@ describe("useMqttSubscribe", () => {
       1,
       defaultTopic,
       defaultHandler,
-      defaultOptions,
+      defaultOptions
     )
     expect(mqttClient.subscribe).toHaveBeenNthCalledWith(
       2,
       defaultTopic,
       defaultHandler,
-      updatedOptions,
+      updatedOptions
     )
     expect(mqttClient.unsubscribe).toHaveBeenCalledTimes(1)
     expect(mqttClient.unsubscribe).toHaveBeenCalledWith(defaultTopic, defaultHandler)

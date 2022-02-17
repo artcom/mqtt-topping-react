@@ -36,7 +36,7 @@ describe("useQueryBatch", () => {
     render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(1)
@@ -52,13 +52,13 @@ describe("useQueryBatch", () => {
     const { rerender } = render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     rerender(
       <MqttProvider httpClient={httpClient}>
         <TestComponent queries={[query1, query2, query3]} />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -74,13 +74,13 @@ describe("useQueryBatch", () => {
     const { rerender } = render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     rerender(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)

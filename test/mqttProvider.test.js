@@ -34,7 +34,7 @@ describe("MqttProvider", () => {
       render(
         <MqttProvider mqttClient={mqttClient}>
           <PublishComponent />
-        </MqttProvider>,
+        </MqttProvider>
       )
 
       expect(mqttClient.publish).toHaveBeenCalledWith(topic, payload, options)
@@ -51,7 +51,7 @@ describe("MqttProvider", () => {
       render(
         <MqttProvider mqttClient={mqttClient}>
           <UnpublishComponent />
-        </MqttProvider>,
+        </MqttProvider>
       )
 
       expect(mqttClient.unpublish).toHaveBeenCalledWith(topic)
@@ -68,7 +68,7 @@ describe("MqttProvider", () => {
       render(
         <MqttProvider mqttClient={mqttClient} httpClient={httpClient}>
           <Component />
-        </MqttProvider>,
+        </MqttProvider>
       )
 
       expect(topping.unpublishRecursively).toHaveBeenCalledWith(mqttClient, httpClient, "testTopic")

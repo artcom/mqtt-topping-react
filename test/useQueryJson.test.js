@@ -32,7 +32,7 @@ describe("useQueryJson", () => {
     render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(1)
@@ -48,7 +48,7 @@ describe("useQueryJson", () => {
     const { rerender } = render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     const updatedTopic = "updatedTopic"
@@ -56,7 +56,7 @@ describe("useQueryJson", () => {
     rerender(
       <MqttProvider httpClient={httpClient}>
         <TestComponent topic={updatedTopic} />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -72,13 +72,13 @@ describe("useQueryJson", () => {
     const { rerender } = render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     rerender(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>,
+      </MqttProvider>
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
