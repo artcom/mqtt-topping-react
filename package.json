@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@artcom/async-task-hook": "^1.1.3",
-    "@artcom/mqtt-topping": "^3.2.0",
+    "@artcom/mqtt-topping": "^3.2.1",
     "@babel/eslint-parser": "^7.17.0"
   },
   "peerDependencies": {
