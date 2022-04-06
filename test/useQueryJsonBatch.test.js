@@ -6,7 +6,6 @@
 jest.mock("@artcom/async-task-hook", () => ({ useAsyncTask: jest.fn() }))
 
 import { useAsyncTask } from "@artcom/async-task-hook"
-import React from "react"
 import { render } from "@testing-library/react"
 import { MqttProvider } from "../src/mqttProvider"
 import { useQueryJsonBatch } from "../src"

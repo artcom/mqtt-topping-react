@@ -9,5 +9,6 @@ export default (topic, handler, { qos, parseJson } = {}) => {
     subscribe(topic, handler, { qos, parseJson })
 
     return () => unsubscribe(topic, handler)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topic, handler, qos, parseJson])
 }

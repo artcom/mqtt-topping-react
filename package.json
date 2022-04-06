@@ -19,6 +19,7 @@
     "async"
   ],
   "scripts": {
+    "format": "prettier --write src test",
     "lint": "eslint src test --fix",
     "build": "babel src --out-dir lib --source-maps",
     "test": "jest",
@@ -26,27 +27,28 @@
     "prepublishOnly": "npm run lint && npm run test && npm run build"
   },
   "dependencies": {
-    "@artcom/async-task-hook": "^1.1.3",
-    "@artcom/mqtt-topping": "^3.2.1",
+    "@artcom/async-task-hook": "^1.2.0",
+    "@artcom/mqtt-topping": "^3.3.1",
     "@babel/eslint-parser": "^7.17.0"
   },
   "peerDependencies": {
-    "react": "^17.0.2"
+    "react": "^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.3",
-    "@babel/core": "^7.17.4",
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.8",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
-    "@testing-library/react": "^12.1.3",
-    "eslint": "^8.9.0",
-    "eslint-config-artcom": "^0.12.1",
-    "eslint-config-artcom-react": "^0.6.0",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-jest": "^26.1.1",
-    "eslint-plugin-react": "^7.28.0",
+    "@testing-library/react": "^13.0.0",
+    "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.1.3",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.4.0",
     "jest": "^27.5.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "prettier": "^2.6.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   }
 }

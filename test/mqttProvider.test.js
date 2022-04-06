@@ -6,7 +6,7 @@
 jest.mock("@artcom/mqtt-topping", () => ({ unpublishRecursively: jest.fn() }))
 
 import * as topping from "@artcom/mqtt-topping"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { render } from "@testing-library/react"
 import { MqttContext, MqttProvider } from "../src"
 import { createMqttClientMock, createHttpClientMock } from "./utils"
