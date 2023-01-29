@@ -27,13 +27,24 @@ async function start() {
   const httpClient = createHttpClient("http://broker.test.local:8080")
 
   render(
-    <MqttProvider mqttClient={ mqttClient } httpClient={ httpClient }>
+    <MqttProvider mqttClient={mqttClient} httpClient={httpClient}>
       // render app
     </MqttProvider>
   )
 }
 
 start()
+```
+
+### Connect
+
+**Note:** if you know your deviceId e.g. via url parameters please provide an appId aswell as the deviceId so debugging is a lot easier, otherwise you can just provide a clientId as seen in the example above
+
+```javascript
+const mqttClient = await connectAsync("ws://broker.test.local:1883", {
+  appId: "testApp",
+  deviceId: "testDevice",
+})
 ```
 
 ### Subscribe
@@ -45,9 +56,9 @@ import React, { useCallback } from "react"
 import { useMqttSubscribe } from "@artcom/mqtt-topping-react"
 
 const MyComponent = ({ greeting }) => {
-  const handler = useCallback(payload => console.log(`${greeting} ${payload}`), [greeting])
+  const handler = useCallback((payload) => console.log(`${greeting} ${payload}`), [greeting])
   useMqttSubscribe("myTopic", handler)
-  
+
   return <></>
 }
 ```
@@ -105,9 +116,12 @@ const MyComponent = () => {
   const query = useQuery({ topic: "myTopic", depth: 0, flatten: false, parseJson: true })
 
   switch (query.status) {
-    case RUNNING: return <>Loading...</>
-    case FINISHED: return <>{ JSON.stringify(query.result) }</>
-    case ERROR: return <>{ query.error.message }</>
+    case RUNNING:
+      return <>Loading...</>
+    case FINISHED:
+      return <>{JSON.stringify(query.result)}</>
+    case ERROR:
+      return <>{query.error.message}</>
   }
 }
 ```
@@ -121,13 +135,22 @@ import React, { useMemo } from "react"
 import { useQueryBatch, RUNNING, FINISHED, ERROR } from "@artcom/mqtt-topping-react"
 
 const MyComponent = () => {
-  const queries = useMemo(() => [{ topic: "topic1", depth: 1 }, { topic: "topic2", depth: 0 }], [])
+  const queries = useMemo(
+    () => [
+      { topic: "topic1", depth: 1 },
+      { topic: "topic2", depth: 0 },
+    ],
+    []
+  )
   const query = useQueryBatch(queries)
 
   switch (query.status) {
-    case RUNNING: return <>Loading...</>
-    case FINISHED: return <>{ JSON.stringify(query.result) }</>
-    case ERROR: return <>{ query.error.message }</>
+    case RUNNING:
+      return <>Loading...</>
+    case FINISHED:
+      return <>{JSON.stringify(query.result)}</>
+    case ERROR:
+      return <>{query.error.message}</>
   }
 }
 ```
@@ -142,9 +165,12 @@ const MyComponent = () => {
   const query = useQueryJson("myTopic")
 
   switch (query.status) {
-    case RUNNING: return <>Loading...</>
-    case FINISHED: return <>{ JSON.stringify(query.result) }</>
-    case ERROR: return <>{ query.error.message }</>
+    case RUNNING:
+      return <>Loading...</>
+    case FINISHED:
+      return <>{JSON.stringify(query.result)}</>
+    case ERROR:
+      return <>{query.error.message}</>
   }
 }
 ```
@@ -162,9 +188,12 @@ const MyComponent = () => {
   const query = useQueryJsonBatch(queries)
 
   switch (query.status) {
-    case RUNNING: return <>Loading...</>
-    case FINISHED: return <>{ JSON.stringify(query.result) }</>
-    case ERROR: return <>{ query.error.message }</>
+    case RUNNING:
+      return <>Loading...</>
+    case FINISHED:
+      return <>{JSON.stringify(query.result)}</>
+    case ERROR:
+      return <>{query.error.message}</>
   }
 }
 ```
