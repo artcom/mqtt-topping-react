@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@artcom/async-task-hook": "^1.2.0",
-    "@artcom/mqtt-topping": "^3.3.3",
+    "@artcom/mqtt-topping": "^3.4.1",
     "@babel/eslint-parser": "^7.18.9",
     "jest-environment-jsdom": "^29.0.2"
   },
