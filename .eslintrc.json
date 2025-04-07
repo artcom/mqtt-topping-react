@@ -1,26 +1,53 @@
 {
   "root": true,
+  "parser": "@typescript-eslint/parser", // Use the TypeScript parser
   "parserOptions": {
-    "ecmaVersion": 2020
+    "ecmaVersion": 2020,
+    "sourceType": "module", // Use modules
+    "ecmaFeatures": {
+      "jsx": true // Enable JSX parsing
+    }
   },
+  "plugins": [
+    "@typescript-eslint", 
+    "react",
+    "react-hooks",
+    "import",
+    "prettier"
+  ],
   "extends": [
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended", // Recommended TS rules
+    "plugin:react/recommended", // Recommended React rules
+    "plugin:react-hooks/recommended", // Recommended Hooks rules
     "plugin:import/recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:react/jsx-runtime",
-    "prettier"
+    "plugin:import/typescript", // Import plugin TS support
+    "prettier" // **Important:** Must be last to override other formatting rules
   ],
   "env": {
     "es2020": true,
-    "browser": true
+    "browser": true,
+    "node": true, // Add node env if needed for scripts/tests
+    "jest": true // Add jest env for test files
   },
   "settings": {
     "react": {
-      "version": "detect"
+      "version": "detect" // Automatically detect React version
+    },
+    "import/resolver": {
+      "typescript": {}, // Help import plugin find TS modules
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
     }
   },
   "rules": {
-    "react/prop-types": 0
-  }
+    "react/prop-types": "off", // Disable prop-types rule in TS projects
+    "react/react-in-jsx-scope": "off", // Not needed with new JSX transform
+    "@typescript-eslint/explicit-module-boundary-types": "off", // Optional: Allow inferred return types
+    "prettier/prettier": "warn", // Show Prettier problems as warnings
+    // Add any other custom rules here
+    "import/no-unresolved": "error" // Ensure imports resolve
+  },
+  "ignorePatterns": ["node_modules/", "dist/", "lib/"] // Ignore build/dependency folders
 }

@@ -1,0 +1,1 @@
+{"version":3,"file":"createHttpClient.js","sourceRoot":"","sources":["../src/createHttpClient.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,UAAU,EAAE,MAAM,sBAAsB,CAAA;AAEjD,MAAM,CAAC,MAAM,gBAAgB,GAAG,CAAC,aAAqB,EAAc,EAAE;IACpE,OAAO,IAAI,UAAU,CAAC,aAAa,CAAC,CAAA;AACtC,CAAC,CAAA;AAED,eAAe,gBAAgB,CAAA"}

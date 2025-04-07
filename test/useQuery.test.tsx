@@ -1,10 +1,5 @@
-/**
- * @jest-environment jsdom
- */
-
-/* eslint-disable import/first */
 jest.mock("@artcom/async-task-hook", () => ({ useAsyncTask: jest.fn() }))
-
+import React from "react"
 import { useAsyncTask } from "@artcom/async-task-hook"
 import { render } from "@testing-library/react"
 import { MqttProvider } from "../src/mqttProvider"
@@ -40,7 +35,7 @@ describe("useQuery", () => {
     render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(1)
@@ -61,7 +56,7 @@ describe("useQuery", () => {
     const { rerender } = render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     const updatedTopic = "updatedTopic"
@@ -69,7 +64,7 @@ describe("useQuery", () => {
     rerender(
       <MqttProvider httpClient={httpClient}>
         <TestComponent topic={updatedTopic} />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -90,7 +85,7 @@ describe("useQuery", () => {
     const { rerender } = render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     const updatedDepth = 1
@@ -98,7 +93,7 @@ describe("useQuery", () => {
     rerender(
       <MqttProvider httpClient={httpClient}>
         <TestComponent depth={updatedDepth} />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -119,7 +114,7 @@ describe("useQuery", () => {
     const { rerender } = render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     const updatedFlatten = true
@@ -127,7 +122,7 @@ describe("useQuery", () => {
     rerender(
       <MqttProvider httpClient={httpClient}>
         <TestComponent flatten={updatedFlatten} />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -148,7 +143,7 @@ describe("useQuery", () => {
     const { rerender } = render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     const updatedParseJson = true
@@ -156,7 +151,7 @@ describe("useQuery", () => {
     rerender(
       <MqttProvider httpClient={httpClient}>
         <TestComponent parseJson={updatedParseJson} />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
@@ -177,13 +172,13 @@ describe("useQuery", () => {
     const { rerender } = render(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     rerender(
       <MqttProvider httpClient={httpClient}>
         <TestComponent />
-      </MqttProvider>
+      </MqttProvider>,
     )
 
     expect(useAsyncTask).toHaveBeenCalledTimes(2)
