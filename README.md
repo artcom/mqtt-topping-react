@@ -86,6 +86,47 @@ function MyComponent() {
 }
 ```
 
+#### `useMqttQueryBatch`
+
+Fetch multiple topics in a single batch request.
+
+```tsx
+import { useMqttQueryBatch } from "@artcom/mqtt-topping-react"
+
+function MyComponent() {
+  const { data, isLoading, error } = useMqttQueryBatch(["topic/1", "topic/2"])
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+
+  return (
+    <div>
+      {data?.map((result, index) => (
+        <div key={index}>{JSON.stringify(result)}</div>
+      ))}
+    </div>
+  )
+}
+```
+
+#### `useMqttUnpublishRecursively`
+
+Unpublish a topic and all its subtopics recursively.
+
+```tsx
+import { useMqttUnpublishRecursively } from "@artcom/mqtt-topping-react"
+
+function MyComponent() {
+  const unpublishRecursively = useMqttUnpublishRecursively()
+
+  const handleCleanup = async () => {
+    await unpublishRecursively("my/topic")
+  }
+
+  return <button onClick={handleCleanup}>Cleanup</button>
+}
+```
+
 ## API Reference
 
 ### MqttProvider Props

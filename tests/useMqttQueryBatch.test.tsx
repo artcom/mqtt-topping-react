@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { useMqttContext } from "../src/MqttProvider/MqttContext"
 import { MqttProvider } from "../src/MqttProvider/MqttProvider"
-import { useMqttQuery } from "../src/useMqttQuery"
+import { useMqttQueryBatch } from "../src/useMqttQueryBatch"
 
 // Mock HttpClient
 vi.mock("@artcom/mqtt-topping", async (importOriginal) => {
@@ -20,9 +20,9 @@ vi.mock("@artcom/mqtt-topping", async (importOriginal) => {
   }
 })
 
-describe("useMqttQuery", () => {
+describe("useMqttQueryBatch", () => {
   let queryClient: QueryClient
-  let mockHttpClient: { queryJson: ReturnType<typeof vi.fn> }
+  let mockHttpClient: { queryJsonBatch: ReturnType<typeof vi.fn> }
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -35,7 +35,9 @@ describe("useMqttQuery", () => {
     })
 
     mockHttpClient = {
-      queryJson: vi.fn().mockResolvedValue({ foo: "bar" }),
+      queryJsonBatch: vi
+        .fn()
+        .mockResolvedValue([{ foo: "bar" }, { baz: "qux" }]),
     }
     // Use a regular function because arrow functions cannot be used as constructors
     vi.mocked(HttpClient).mockImplementation(function () {
@@ -54,10 +56,11 @@ describe("useMqttQuery", () => {
     </QueryClientProvider>
   )
 
-  it("should fetch data using httpClient", async () => {
+  it("should fetch data using httpClient.queryJsonBatch", async () => {
+    const topics = ["test/topic1", "test/topic2"]
     const { result } = renderHook(
       () => {
-        const query = useMqttQuery("test/topic")
+        const query = useMqttQueryBatch(topics)
         const { status } = useMqttContext()
         return { query, status }
       },
@@ -68,8 +71,8 @@ describe("useMqttQuery", () => {
       expect(result.current.query.isSuccess).toBe(true)
     })
 
-    expect(result.current.query.data).toEqual({ foo: "bar" })
-    expect(mockHttpClient.queryJson).toHaveBeenCalledWith("test/topic")
+    expect(result.current.query.data).toEqual([{ foo: "bar" }, { baz: "qux" }])
+    expect(mockHttpClient.queryJsonBatch).toHaveBeenCalledWith(topics)
 
     await waitFor(() => {
       expect(result.current.status).toBe("connected")
@@ -78,11 +81,11 @@ describe("useMqttQuery", () => {
 
   it("should handle errors", async () => {
     const error = new Error("Fetch failed")
-    mockHttpClient.queryJson.mockRejectedValue(error)
+    mockHttpClient.queryJsonBatch.mockRejectedValue(error)
 
     const { result } = renderHook(
       () => {
-        const query = useMqttQuery("test/topic", { retry: false })
+        const query = useMqttQueryBatch(["test/topic"], { retry: false })
         const { status } = useMqttContext()
         return { query, status }
       },
@@ -113,7 +116,7 @@ describe("useMqttQuery", () => {
 
     const { result } = renderHook(
       () => {
-        const query = useMqttQuery("test/topic")
+        const query = useMqttQueryBatch(["test/topic"])
         const { status } = useMqttContext()
         return { query, status }
       },
@@ -125,7 +128,7 @@ describe("useMqttQuery", () => {
     expect(result.current.query.fetchStatus).toBe("idle")
 
     // Should not have called anything
-    expect(mockHttpClient.queryJson).not.toHaveBeenCalled()
+    expect(mockHttpClient.queryJsonBatch).not.toHaveBeenCalled()
 
     await waitFor(() => {
       expect(result.current.status).toBe("connected")
@@ -134,7 +137,7 @@ describe("useMqttQuery", () => {
 
   it("should refetch when httpBrokerUri changes", async () => {
     function TestComponent() {
-      useMqttQuery("test/topic")
+      useMqttQueryBatch(["test/topic"])
       return null
     }
 
@@ -149,7 +152,7 @@ describe("useMqttQuery", () => {
     const { rerender } = render(<App uri="http://broker1" />)
 
     await waitFor(() => {
-      expect(mockHttpClient.queryJson).toHaveBeenCalledTimes(1)
+      expect(mockHttpClient.queryJsonBatch).toHaveBeenCalledTimes(1)
     })
 
     // Change httpBrokerUri
@@ -157,7 +160,7 @@ describe("useMqttQuery", () => {
 
     // Should have been called again because the key changed
     await waitFor(() => {
-      expect(mockHttpClient.queryJson).toHaveBeenCalledTimes(2)
+      expect(mockHttpClient.queryJsonBatch).toHaveBeenCalledTimes(2)
     })
   })
 })
