@@ -1,6 +1,6 @@
 {
   "name": "@artcom/mqtt-topping-react",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0",
   "description": "Wraps the Art+Com Mqtt Topping library for react.",
   "type": "module",
   "license": "MIT",
