@@ -1,215 +1,100 @@
-# mqtt-topping-react
+# @artcom/mqtt-topping-react
 
-Wraps the [Art+Com Mqtt Topping](https://www.npmjs.com/package/@artcom/mqtt-topping) library for react. It provides multiple hooks and exposes the publish/unpublish methods.
+A React wrapper for `@artcom/mqtt-topping` providing hooks and context for easy MQTT and HTTP integration.
 
-## Install
-
-The package can be installed from [npmjs.com](https://www.npmjs.com/package/@artcom/mqtt-topping-react) via:
+## Installation
 
 ```bash
 npm install @artcom/mqtt-topping-react
 ```
 
+> **Note**: This package includes `@artcom/mqtt-topping` and `@tanstack/react-query` as dependencies, so you don't need to install them separately.
+
 ## Usage
 
-### MQTT Context
+### MqttProvider
 
-Create an MQTT context with an MQTT and HTTP client.
+Wrap your application with `MqttProvider`. You can provide a `suspenseFallback` to handle the initial connection state automatically.
 
-**Note:** The `unpublishRecursively` method as well as the `Query` methods need/use the HTTP client internally.
+```tsx
+import { MqttProvider } from "@artcom/mqtt-topping-react"
 
-```javascript
-import React from "react"
-import { connectAsync, createHttpClient, MqttProvider } from "@artcom/mqtt-topping-react"
-
-async function start() {
-  const mqttClient = await connectAsync("ws://broker.test.local:1883", { clientId: "testClientId" })
-  const httpClient = createHttpClient("http://broker.test.local:8080")
-
-  render(
-    <MqttProvider mqttClient={mqttClient} httpClient={httpClient}>
-      // render app
+function App() {
+  return (
+    <MqttProvider
+      uri="ws://broker.hivemq.com:8000/mqtt"
+      httpBrokerUri="http://broker.hivemq.com:8000/query" // Optional: for useMqttQuery
+      suspenseFallback={<div>Connecting to MQTT...</div>} // Optional: shows this while connecting
+    >
+      <YourApp />
     </MqttProvider>
   )
 }
-
-start()
 ```
 
-### Connect
+### Hooks
 
-**Note:** if you know your deviceId e.g. via url parameters please provide an appId aswell as the deviceId so debugging is a lot easier, otherwise you can just provide a clientId as seen in the example above
+#### `useMqttSubscribe`
 
-```javascript
-const mqttClient = await connectAsync("ws://broker.test.local:1883", {
-  appId: "testApp",
-  deviceId: "testDevice",
-})
-```
+Subscribe to a topic.
 
-### Subscribe
-
-**Note:** Its mandatory to persist the handler (e.g. useCallback) otherwise a new subscription is made on every render.
-
-```javascript
-import React, { useCallback } from "react"
+```tsx
 import { useMqttSubscribe } from "@artcom/mqtt-topping-react"
 
-const MyComponent = ({ greeting }) => {
-  const handler = useCallback((payload) => console.log(`${greeting} ${payload}`), [greeting])
-  useMqttSubscribe("myTopic", handler)
+function MyComponent() {
+  useMqttSubscribe("my/topic", (payload, topic) => {
+    console.log("Received:", payload)
+  })
 
-  return <></>
+  return <div>Listening...</div>
 }
 ```
 
-### Publish
+#### `useHttpClient`
 
-```javascript
-import React, { useContext } from "react"
-import { MqttContext } from "@artcom/mqtt-topping-react"
+Access the HTTP client directly.
 
-const MyComponent = ({ payload }) => {
-  useContext(MqttContext).publish("myTopic", payload)
+```tsx
+import { useHttpClient } from "@artcom/mqtt-topping-react"
 
-  return <></>
-}
-```
+function MyComponent() {
+  const httpClient = useHttpClient()
 
-### Unpublish
-
-```javascript
-import React, { useContext } from "react"
-import { MqttContext } from "@artcom/mqtt-topping-react"
-
-const MyComponent = () => {
-  useContext(MqttContext).unpublish("myTopic")
-
-  return <></>
-}
-```
-
-### UnpublishRecursively
-
-```javascript
-import React, { useContext } from "react"
-import { MqttContext } from "@artcom/mqtt-topping-react"
-
-const MyComponent = () => {
-  useContext(MqttContext).unpublishRecursively("myTopic")
-
-  return <></>
-}
-```
-
-### HTTP Queries
-
-To query topics via the [retained topic HiveMQ plugin](https://github.com/artcom/hivemq-retained-message-query-plugin) the following hooks can be used. See the [async-task-hook documentation](https://github.com/artcom/async-task-hook) for details.
-
-#### Query
-
-```javascript
-import React from "react"
-import { useQuery, RUNNING, FINISHED, ERROR } from "@artcom/mqtt-topping-react"
-
-const MyComponent = () => {
-  const query = useQuery({ topic: "myTopic", depth: 0, flatten: false, parseJson: true })
-
-  switch (query.status) {
-    case RUNNING:
-      return <>Loading...</>
-    case FINISHED:
-      return <>{JSON.stringify(query.result)}</>
-    case ERROR:
-      return <>{query.error.message}</>
+  const fetchData = async () => {
+    const data = await httpClient?.queryJson("my/topic")
+    console.log(data)
   }
+
+  return <button onClick={fetchData}>Fetch</button>
 }
 ```
 
-#### Query Batch
+#### `useMqttQuery`
 
-**Note:** Its mandatory to persist (e.g. memoize the queries) otherwise a new task is created on every rerender.
+Fetch data using TanStack Query integration. This provides caching, loading states, and error handling out of the box. Requires `httpBrokerUri` to be set in `MqttProvider`.
 
-```javascript
-import React, { useMemo } from "react"
-import { useQueryBatch, RUNNING, FINISHED, ERROR } from "@artcom/mqtt-topping-react"
+```tsx
+import { useMqttQuery } from "@artcom/mqtt-topping-react"
 
-const MyComponent = () => {
-  const queries = useMemo(
-    () => [
-      { topic: "topic1", depth: 1 },
-      { topic: "topic2", depth: 0 },
-    ],
-    []
-  )
-  const query = useQueryBatch(queries)
+function MyComponent() {
+  const { data, isLoading, error } = useMqttQuery("my/topic")
 
-  switch (query.status) {
-    case RUNNING:
-      return <>Loading...</>
-    case FINISHED:
-      return <>{JSON.stringify(query.result)}</>
-    case ERROR:
-      return <>{query.error.message}</>
-  }
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+
+  return <div>Data: {JSON.stringify(data)}</div>
 }
 ```
 
-#### Query Json
+## API Reference
 
-```javascript
-import React from "react"
-import { useQueryJson, RUNNING, FINISHED, ERROR } from "@artcom/mqtt-topping-react"
+### MqttProvider Props
 
-const MyComponent = () => {
-  const query = useQueryJson("myTopic")
-
-  switch (query.status) {
-    case RUNNING:
-      return <>Loading...</>
-    case FINISHED:
-      return <>{JSON.stringify(query.result)}</>
-    case ERROR:
-      return <>{query.error.message}</>
-  }
-}
-```
-
-#### Query Json Batch
-
-**Note:** Its mandatory to persist (e.g. memoize the queries) otherwise a new task is created on every rerender.
-
-```javascript
-import React, { useMemo } from "react"
-import { useQueryJsonBatch, RUNNING, FINISHED, ERROR } from "@artcom/mqtt-topping-react"
-
-const MyComponent = () => {
-  const queries = useMemo(() => ["topic1", "topic2"], [])
-  const query = useQueryJsonBatch(queries)
-
-  switch (query.status) {
-    case RUNNING:
-      return <>Loading...</>
-    case FINISHED:
-      return <>{JSON.stringify(query.result)}</>
-    case ERROR:
-      return <>{query.error.message}</>
-  }
-}
-```
-
-## Development
-
-### Build
-
-```bash
-npm install
-npm run build
-```
-
-### Test
-
-```bash
-npm install
-npm run test
-```
+| Prop               | Type                | Description                                                                 |
+| ------------------ | ------------------- | --------------------------------------------------------------------------- |
+| `uri`              | `string`            | The MQTT broker URI (e.g., `tcp://localhost:1883` or `ws://localhost:9001`) |
+| `options`          | `MqttClientOptions` | Optional configuration for the MQTT client                                  |
+| `httpBrokerUri`    | `string`            | Optional URI for the HTTP interface of the broker                           |
+| `httpOptions`      | `HttpClientOptions` | Optional configuration for the HTTP client                                  |
+| `suspenseFallback` | `ReactNode`         | Optional fallback UI to show while connecting                               |
+| `children`         | `ReactNode`         | Child components                                                            |
