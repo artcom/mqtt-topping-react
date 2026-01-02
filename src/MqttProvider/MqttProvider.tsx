@@ -4,9 +4,8 @@ import {
   type MqttClientOptions,
 } from "@artcom/mqtt-topping"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import React, { Suspense, useMemo } from "react"
+import React, { useMemo } from "react"
 
-import { useMqttSuspense } from "../useMqttSuspense"
 import { MqttContext } from "./MqttContext"
 import { useMqttConnection } from "./useMqttConnection"
 
@@ -16,12 +15,6 @@ export interface MqttProviderProps {
   httpBrokerUri?: string
   httpOptions?: HttpClientOptions
   children: React.ReactNode
-  suspenseFallback?: React.ReactNode
-}
-
-function MqttSuspenseGate({ children }: { children: React.ReactNode }) {
-  useMqttSuspense()
-  return <>{children}</>
 }
 
 const defaultQueryClient = new QueryClient()
@@ -44,39 +37,20 @@ export function MqttProvider({
   httpBrokerUri,
   httpOptions,
   children,
-  suspenseFallback,
 }: MqttProviderProps) {
-  const serializedOptions = JSON.stringify(options)
-  const stableOptions = useMemo(
-    () => options,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [serializedOptions],
-  )
+  const stableOptions = useMemo(() => options, [options])
 
   const { client, status, error, connectionPromise } = useMqttConnection(
     uri,
     stableOptions,
   )
 
-  const serializedHttpOptions = JSON.stringify(httpOptions)
-  const stableHttpOptions = useMemo(
-    () => httpOptions,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [serializedHttpOptions],
-  )
+  const stableHttpOptions = useMemo(() => httpOptions, [httpOptions])
 
   const httpClient = useMemo(() => {
     if (!httpBrokerUri) return null
     return new HttpClient(httpBrokerUri, stableHttpOptions)
   }, [httpBrokerUri, stableHttpOptions])
-
-  const content = suspenseFallback ? (
-    <Suspense fallback={suspenseFallback}>
-      <MqttSuspenseGate>{children}</MqttSuspenseGate>
-    </Suspense>
-  ) : (
-    children
-  )
 
   return (
     <QueryClientProvider client={defaultQueryClient}>
@@ -91,7 +65,7 @@ export function MqttProvider({
           connectionPromise,
         }}
       >
-        {content}
+        {children}
       </MqttContext.Provider>
     </QueryClientProvider>
   )

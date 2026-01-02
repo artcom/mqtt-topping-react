@@ -1,3 +1,5 @@
+import { useCallback } from "react"
+
 import { useMqtt } from "./useMqtt"
 
 /**
@@ -8,12 +10,15 @@ import { useMqtt } from "./useMqtt"
 export function useMqttPublisher() {
   const client = useMqtt()
 
-  const publish = (topic: string, payload: unknown) => {
-    if (!client) {
-      throw new Error("MQTT client is not connected")
-    }
-    return client.publish(topic, payload)
-  }
+  const publish = useCallback(
+    (topic: string, payload: unknown) => {
+      if (!client) {
+        throw new Error("MQTT client is not connected")
+      }
+      return client.publish(topic, payload)
+    },
+    [client],
+  )
 
   return publish
 }

@@ -13,12 +13,11 @@ export function useMqttSuspense(): void {
   }
 
   if (status === "error") {
-    // eslint-disable-next-line @typescript-eslint/only-throw-error
-    throw error
+    throw error ?? new Error("MQTT connection failed")
   }
 
   if (connectionPromise) {
-    // eslint-disable-next-line @typescript-eslint/only-throw-error
-    throw connectionPromise
+    const suspense = connectionPromise as Promise<void> & Error
+    throw suspense
   }
 }

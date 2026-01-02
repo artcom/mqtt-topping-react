@@ -26,6 +26,7 @@ export function useMqttQuery<TQueryFnData = unknown, TData = TQueryFnData>(
 
   return useQuery({
     ...options,
+    retry: options?.retry ?? false,
     queryKey: ["mqtt", topic, httpBrokerUri, httpOptions],
     queryFn: async () => {
       if (!client) {

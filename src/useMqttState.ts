@@ -8,9 +8,11 @@ import { useMqttSubscribe } from "./useMqttSubscribe"
  * @param topic - The topic to subscribe to.
  * @returns The latest message payload or undefined if no message received yet.
  */
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
-export function useMqttState<T = unknown>(topic: string): T | undefined {
-  const [payload, setPayload] = useState<T | undefined>(undefined)
+export function useMqttState<T = unknown>(
+  topic: string,
+  initialValue?: T,
+): T | undefined {
+  const [payload, setPayload] = useState<T | undefined>(initialValue)
 
   useMqttSubscribe<T>(topic, (newPayload) => {
     setPayload(newPayload)

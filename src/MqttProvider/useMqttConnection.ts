@@ -3,6 +3,24 @@ import { useEffect, useRef, useState } from "react"
 
 import { type MqttContextValue } from "./MqttContext"
 
+interface ConnectionPromiseState {
+  promise: Promise<void>
+  resolve: () => void
+  reject: (reason?: unknown) => void
+}
+
+const createConnectionPromiseState = (): ConnectionPromiseState => {
+  let resolve!: () => void
+  let reject!: (reason?: unknown) => void
+
+  const promise = new Promise<void>((res, rej) => {
+    resolve = res
+    reject = rej
+  })
+
+  return { promise, resolve, reject }
+}
+
 /**
  * Hook to manage the MQTT connection lifecycle.
  *
@@ -15,12 +33,10 @@ export function useMqttConnection(
   options?: MqttClientOptions,
 ): Pick<MqttContextValue, "client" | "status" | "error" | "connectionPromise"> {
   const [client, setClient] = useState<MqttClient | null>(null)
-  const [status, setStatus] =
-    useState<MqttContextValue["status"]>("disconnected")
+  const [status, setStatus] = useState<MqttContextValue["status"]>("connecting")
   const [error, setError] = useState<Error | null>(null)
-  const [connectionPromise, setConnectionPromise] =
-    useState<Promise<void> | null>(null)
-  const resolverRef = useRef<(() => void) | null>(null)
+  const [connectionPromiseState, setConnectionPromiseState] =
+    useState<ConnectionPromiseState>(() => createConnectionPromiseState())
 
   const clientRef = useRef<MqttClient | null>(null)
 
@@ -32,13 +48,8 @@ export function useMqttConnection(
       setError(null)
 
       // Create a new promise for this connection attempt
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      let resolve: () => void = () => {}
-      const promise = new Promise<void>((r) => {
-        resolve = r
-      })
-      resolverRef.current = resolve
-      setConnectionPromise(promise)
+      const nextConnection = createConnectionPromiseState()
+      setConnectionPromiseState(nextConnection)
 
       try {
         const mqttClient = await MqttClient.connect(uri, options)
@@ -47,11 +58,7 @@ export function useMqttConnection(
           clientRef.current = mqttClient
           setClient(mqttClient)
           setStatus("connected")
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          if (resolverRef.current) {
-            resolverRef.current()
-            resolverRef.current = null
-          }
+          nextConnection.resolve()
         } else {
           void mqttClient.disconnect()
         }
@@ -60,14 +67,7 @@ export function useMqttConnection(
           console.error("Failed to connect to MQTT broker:", err)
           setError(err instanceof Error ? err : new Error(String(err)))
           setStatus("error")
-          // We don't resolve the promise on error, so Suspense might hang?
-          // Or we should reject it? If we reject, Suspense throws.
-          // Let's reject it so ErrorBoundary catches it.
-          // Actually, better to resolve it and let the hook check 'status' and throw the error object.
-          if (resolverRef.current) {
-            resolverRef.current()
-            resolverRef.current = null
-          }
+          nextConnection.reject(err)
         }
       }
     }
@@ -85,5 +85,10 @@ export function useMqttConnection(
     }
   }, [uri, options])
 
-  return { client, status, error, connectionPromise }
+  return {
+    client,
+    status,
+    error,
+    connectionPromise: connectionPromiseState.promise,
+  }
 }

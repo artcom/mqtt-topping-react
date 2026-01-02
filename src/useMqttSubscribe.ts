@@ -8,11 +8,10 @@ import { useMqtt } from "./useMqtt"
  * @param topic - The topic to subscribe to.
  * @param handler - The callback function to handle incoming messages.
  */
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
 export function useMqttSubscribe<T = unknown>(
   topic: string,
   handler: (payload: T, topic: string) => void,
-): void {
+): (payload: T, topic: string) => void {
   const client = useMqtt()
   const handlerRef = useRef(handler)
 
@@ -37,4 +36,6 @@ export function useMqttSubscribe<T = unknown>(
       void client.unsubscribe(topic, safeHandler)
     }
   }, [client, topic])
+
+  return handler
 }
