@@ -4,8 +4,9 @@ import {
   type MqttClientOptions,
 } from "@artcom/mqtt-topping"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import React, { useMemo } from "react"
+import React, { Suspense, useMemo } from "react"
 
+import { useMqttSuspense } from "../useMqttSuspense"
 import { MqttContext } from "./MqttContext"
 import { useMqttConnection } from "./useMqttConnection"
 
@@ -14,10 +15,16 @@ export interface MqttProviderProps {
   options?: MqttClientOptions
   httpBrokerUri?: string
   httpOptions?: HttpClientOptions
+  suspenseFallback?: React.ReactNode
   children: React.ReactNode
 }
 
 const defaultQueryClient = new QueryClient()
+
+function MqttSuspenseBoundary({ children }: { children: React.ReactNode }) {
+  useMqttSuspense()
+  return <>{children}</>
+}
 
 /**
  * Provider component for MQTT context.
@@ -36,6 +43,7 @@ export function MqttProvider({
   options,
   httpBrokerUri,
   httpOptions,
+  suspenseFallback,
   children,
 }: MqttProviderProps) {
   const stableOptions = useMemo(() => options, [options])
@@ -65,7 +73,13 @@ export function MqttProvider({
           connectionPromise,
         }}
       >
-        {children}
+        {suspenseFallback ? (
+          <Suspense fallback={suspenseFallback}>
+            <MqttSuspenseBoundary>{children}</MqttSuspenseBoundary>
+          </Suspense>
+        ) : (
+          children
+        )}
       </MqttContext.Provider>
     </QueryClientProvider>
   )

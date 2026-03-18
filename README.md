@@ -14,7 +14,7 @@ npm install @artcom/mqtt-topping-react
 
 ### MqttProvider
 
-Wrap your application with `MqttProvider`. You can provide a `suspenseFallback` to handle the initial connection state automatically.
+Wrap your application with `MqttProvider`. When you provide a `suspenseFallback`, the provider will suspend rendering its children until the initial MQTT connection succeeds and show the fallback in the meantime.
 
 ```tsx
 import { MqttProvider } from "@artcom/mqtt-topping-react"
@@ -137,5 +137,5 @@ function MyComponent() {
 | `options`          | `MqttClientOptions` | Optional configuration for the MQTT client                                  |
 | `httpBrokerUri`    | `string`            | Optional URI for the HTTP interface of the broker                           |
 | `httpOptions`      | `HttpClientOptions` | Optional configuration for the HTTP client                                  |
-| `suspenseFallback` | `ReactNode`         | Optional fallback UI to show while connecting                               |
+| `suspenseFallback` | `ReactNode`         | Optional fallback UI shown while the initial MQTT connection is pending      |
 | `children`         | `ReactNode`         | Child components                                                            |
